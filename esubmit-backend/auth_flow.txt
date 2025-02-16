@@ -1,0 +1,36 @@
+# Teacher Registration
+curl -X POST http://localhost:8080/api/auth/register -H "Content-Type: application/json" -d "{\"username\": \"teacher1\", \"password\": \"teacherpass\", \"email\": \"teacher1@example.com\", \"role\": \"TEACHER\"}"
+
+# Response:
+Registration failed: Username already exists
+
+# Teacher Login
+curl -X POST http://localhost:8080/api/auth/login -H "Content-Type: application/json" -d "{\"username\": \"teacher1\", \"password\": \"teacherpass\"}"
+
+# Response:
+{"token":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWFjaGVyMSIsInJvbGUiOiJURUFDSEVSIiwiaWF0IjoxNzM5NTQwNTU0LCJleHAiOjE3Mzk2MjY5NTR9.Z_-Q3QJX6M8ncLu8gwEmLmiPl1TDtw1nx1IocRbgUoU","username":"teacher1","role":"TEACHER"}
+
+# Access Protected Endpoint
+curl -X GET http://localhost:8080/api/users/all -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWFjaGVyMSIsInJvbGUiOiJURUFDSEVSIiwiaWF0IjoxNzM5NTQwNTU4LCJleHAiOjE3Mzk2MjY5NTh9.Z_-Q3QJX6M8ncLu8gwEmLmiPl1TDtw1nx1IocRbgUoU"
+
+# Response:
+[{"id":1,"username":"student1","password":"$2a$10$/0Ue06Rc4c8kPArH1F79guxkZFmgfY2v8m.jmxNVIlsWZAm./KxT2","email":"student1@example.com","role":"STUDENT","token":null},{"id":2,"username":"teacher1","password":"$2a$10$/2qwgAnkrcGFx0u89ZzerOkGDEbLfs5/hLWAZUcywbXuPgoXR6Yxu","email":"teacher1@example.com","role":"TEACHER","token":null}]
+
+# Add Assignment
+curl -X POST http://localhost:8080/api/assignments/add -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWFjaGVyMSIsInJvbGUiOiJURUFDSEVSIiwiaWF0IjoxNzM5NTQwNTU4LCJleHAiOjE3Mzk2MjY5NTh9.Z_-Q3QJX6M8ncLu8gwEmLmiPl1TDtw1nx1IocRbgUoU" -d "{\"title\": \"C Programming Basics\", \"description\": \"Write a program to demonstrate basic C concepts\", \"dueDate\": \"2024-02-15\", \"courseId\": 1}"
+
+# Response:
+{"id":1,"title":"C Programming Basics","description":"Write a program to demonstrate basic C concepts","dueDate":"2024-02-15T00:00:00.000+00:00"}
+
+# Get Assignment by ID
+curl -X GET http://localhost:8080/api/assignments/1 -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWFjaGVyMSIsInJvbGUiOiJURUFDSEVSIiwiaWF0IjoxNzM5NTQwNTU4LCJleHAiOjE3Mzk2MjY5NTh9.Z_-Q3QJX6M8ncLu8gwEmLmiPl1TDtw1nx1IocRbgUoU"
+
+# Response:
+{"error":"Unauthorized","message":"Authentication failed"}
+
+
+# Add Assignment
+curl -X POST http://localhost:8080/api/assignments/add -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWFjaGVyMSIsInJvbGUiOiJURUFDSEVSIiwiaWF0IjoxNzM5NTQwNTU0LCJleHAiOjE3Mzk2MjY5NTR9.Z_-Q3QJX6M8ncLu8gwEmLmiPl1TDtw1nx1IocRbgUoU" -d "{\"title\": \"C Programming Basics\", \"description\": \"Write a program to demonstrate basic C concepts\", \"dueDate\": \"2024-02-15\", \"courseId\": 1}"
+
+# Response:
+{"id":1,"title":"C Programming Basics","description":"Write a program to demonstrate basic C concepts","dueDate":"2024-02-15T00:00:00.000+00:00"}
